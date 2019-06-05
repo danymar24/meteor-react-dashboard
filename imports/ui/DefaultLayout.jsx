@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router';
+import { Route, withRouter } from 'react-router';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,10 +14,14 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
+import Icon from '@material-ui/core/Icon';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import { Hidden } from '@material-ui/core';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { Meteor } from 'meteor/meteor';
 
 const drawerWidth = 240;
 
@@ -100,16 +104,46 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function DefaultLayout({component: Component, title: title, ...rest}) {
+function DefaultLayout({component: Component, title: title, history: history, ...rest}) {
+  
   const classes = useStyles();
+  
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [desktopOpen, setDesktopOpen] = React.useState(true);
+  const [accountAnchorEl, setAccountAnchorEl] = React.useState(null);
+  
+  const authenticate = () => {
+    if (!Meteor.loggingIn() && !Meteor.userId()) {
+      return history.push('/signin');
+    }
+  }
+  authenticate();
+  
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const handleDesktopDrawerToggle = () => {
     setDesktopOpen(!desktopOpen);
+  }
+
+  const openAccountMenu = (event) => {
+    setAccountAnchorEl(event.currentTarget);
+  }
+
+  const closeAccountMenu = () => {
+    setAccountAnchorEl(null);
+  }
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    Meteor.logout((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        history.push('/signin');
+      }
+    })
   }
 
   return (
@@ -148,6 +182,17 @@ export default function DefaultLayout({component: Component, title: title, ...re
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <IconButton color="inherit"
+                        onClick={openAccountMenu}>
+                <Icon>account_circle</Icon>
+            </IconButton>
+            <Menu id='account_menu'
+                  anchorEl={accountAnchorEl}
+                  keepMounted
+                  open={Boolean(accountAnchorEl)}
+                  onClose={closeAccountMenu}>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
         <Hidden smUp implementation="css">
@@ -199,3 +244,5 @@ export default function DefaultLayout({component: Component, title: title, ...re
     )} />
   );
 }
+
+export default withRouter(DefaultLayout);
