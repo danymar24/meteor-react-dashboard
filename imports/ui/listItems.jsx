@@ -11,23 +11,27 @@ import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
 
-export const mainListItems = (
-  <div>
-    <ListItem button component={RouterLink} to="/dashboard">
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItem>
-    <ListItem button component={RouterLink} to="/">
+export function MainListItems({ ...rest }) {
+
+  return (
+    <div>
+      <ListItem button component={RouterLink} to="/dashboard">
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary="Orders" />
-    </ListItem>
-  </div>
-);
+        <ListItemText primary="Dashboard" />
+      </ListItem>
+      <ListItem button component={RouterLink} to="/users">
+          <ListItemIcon>
+            <Icon>supervisor_account</Icon>
+          </ListItemIcon>
+          <ListItemText primary="Users" />
+      </ListItem>
+    </div>
+  );
+}
 
 export const secondaryListItems = (
   <div>

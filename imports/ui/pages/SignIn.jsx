@@ -54,7 +54,6 @@ export default function SignIn({ history: history }) {
       if (err) {
         console.log(err);
       } else {
-
         history.push('/dashboard');
       }
     });
@@ -100,10 +99,6 @@ export default function SignIn({ history: history }) {
             autoComplete="current-password"
             value={values.password}
             onChange={handleChange('password')}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
           />
           <Button
             type="submit"

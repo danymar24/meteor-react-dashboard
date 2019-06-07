@@ -17,7 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Icon from '@material-ui/core/Icon';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+import { MainListItems, secondaryListItems } from './listItems';
 import { Hidden } from '@material-ui/core';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -104,7 +104,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function DefaultLayout({component: Component, title: title, history: history, ...rest}) {
+function DefaultLayout({
+  component: Component, 
+  title: title, 
+  history: history, 
+  user: user, 
+  ...rest}) {
   
   const classes = useStyles();
   
@@ -209,7 +214,7 @@ function DefaultLayout({component: Component, title: title, history: history, ..
               </IconButton>
             </div>
             <Divider />
-            <List>{mainListItems}</List>
+            <List><MainListItems /></List>
             <Divider />
             <List>{secondaryListItems}</List>
           </Drawer>
@@ -227,7 +232,7 @@ function DefaultLayout({component: Component, title: title, history: history, ..
               </IconButton>
             </div>
             <Divider />
-            <List>{mainListItems}</List>
+            <List><MainListItems /></List>
             <Divider />
             <List>{secondaryListItems}</List>
           </Drawer>
